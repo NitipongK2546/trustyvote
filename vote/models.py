@@ -58,7 +58,4 @@ class Choice(models.Model):
     
 class VoteCard(models.Model):
     data = models.JSONField()
-
-    # Data has encrypted vote
-    # encrypted vote has poll
-    # get that poll
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)

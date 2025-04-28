@@ -5,15 +5,17 @@ from users.models import Member
 
 from .code_gen import generate_poll_code, create_seeded_hash
 
-from examples.send import send_vote
+from utils.send import send_vote
 
 from django.core.serializers import serialize
 from cryptography.hazmat.primitives import serialization
 
-from cryptography.hazmat.primitives.asymmetric import rsa
-from examples.rsa import generate_rsa_keys
+from utils.rsa import generate_rsa_keys
 from cryptography.hazmat.backends import default_backend
 
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='/login')
 def create_poll(request):
     if request.method == 'POST':
         question = request.POST.get('question')
@@ -69,6 +71,7 @@ def create_poll(request):
 
     })
 
+@login_required(login_url='/login')
 def poll_success(request, poll_code):
 
     poll = Poll.objects.get(poll_code=poll_code)
@@ -133,7 +136,7 @@ def poll(request, poll_code):
             # voter_id: the randomly generated one, use real id hash with poll_secret
             # server_public_key : hidden input field should be fine? We can't prevent it from being changed.
             #
-            send_vote(vote_data, voter_id, server_public_key)
+            send_vote(vote_data, voter_id, server_public_key, poll_code)
 
             print("finished")
 

@@ -43,10 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'authenticate',
     'vote',
-    'encrypter',
     'users',
+    'utils',
 
     'allauth',
     'allauth.account',
@@ -116,6 +115,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.environ.get('DB_NAME', 'mydatabase'),
+#         'USER': os.environ.get('DB_USER', 'myuser'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD', 'mypassword'),
+#         'HOST': os.environ.get('DB_HOST', 'db'),
+#         'PORT': os.environ.get('DB_PORT', '3306'),
+#     }
+# }
 
 
 # Password validation

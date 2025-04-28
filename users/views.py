@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegisterForm
 from .models import Member
-from vote.models import Poll
+from vote.models import Poll, Candidate
 
 from django.contrib.auth.decorators import login_required
 
@@ -52,9 +52,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "users/login.html", {
-        "Message" : "Logged out."
-    })
+    return redirect("users:main_page")
 
 def register_view(request):
 
@@ -64,13 +62,6 @@ def register_view(request):
             user = form.save()
             user.is_active = True
             user.save()
-
-            # Member.objects.create(
-            #     member_fname = user.first_name,
-            #     member_lname = user.last_name,
-            #     member_user = user,
-            #     member_info = "Info",
-            # )
 
             return redirect("users:login")
         else:
@@ -88,4 +79,14 @@ def profile_view(request):
     current_member = Member.objects.get(member_user=request.user)
     return render(request, "users/profile.html", {
         "member": current_member
+    })
+
+def poll_score(request, poll_code):
+
+    poll = Poll.objects.get(poll_code=poll_code)
+
+    all_candidates = Candidate.objects.filter(poll=poll)
+
+    return render(request, "users/results.html", {
+        "candidates": all_candidates,
     })

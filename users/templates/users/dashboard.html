@@ -27,7 +27,7 @@
                     <td>{{ poll.poll_code }}</td>
                     <td>{{ poll.question }}</td>
                     <td>
-                    <a class="details_button" href="{% url 'users:main_page' %}">Count Votes</a>
+                    <a class="details_button" href="{% url 'users:poll_score' poll.poll_code %}">Count Votes</a>
                     </td> 
                 </tr>
             {% endfor %}
@@ -35,6 +35,8 @@
     </table>
 
     <a href="{% url 'vote:create_poll' %}">Create poll</a>
+
+    <a href="{% url 'users:logout' %}">Logout</a>
         
     </main>
 </body>
