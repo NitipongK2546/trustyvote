@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustyVote</title>
+</head>
+<body>
+
+    <h1>Welcome to TrustyVote!</h1>
+    <h2>A site for people to create poll and vote online safely.</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="poll_code" placeholder="Poll Code" required>
+            <button type="submit">Submit</button>
+        </form>
+
+    <a href="{% url 'users:login' %}">Login to create poll.</a>
+</body>
+</html>
