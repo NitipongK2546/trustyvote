@@ -30,8 +30,8 @@ services:
     ports:
       - "9001:8000"
     environment:
-      - DB_HOST=db
-      - 
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASS}
     depends_on:
