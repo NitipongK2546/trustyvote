@@ -3,9 +3,12 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegisterForm
 from .models import Member
+from vote.models import Candidate, Voter, Choice
 from vote.models import Poll, Candidate
 
 from django.contrib.auth.decorators import login_required
+from utils.code_gen import generate_poll_code, create_seeded_hash
+from utils.rsa import generate_rsa_keys
 
 # Create your views here.
 
@@ -89,4 +92,69 @@ def poll_score(request, poll_code):
 
     return render(request, "users/results.html", {
         "candidates": all_candidates,
+    })
+
+@login_required(login_url='/login')
+def create_poll(request):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        choices = request.POST.getlist('choices[]')
+        voter_ids_raw = request.POST.get('voter_ids')
+
+        kpriv, kpub = generate_rsa_keys()
+
+        print(kpub)
+        print(kpub.decode('utf-8'))
+
+        if question and choices:
+            poll = Poll.objects.create(question=question, 
+                                       creator=Member.objects.get(member_user=request.user),
+                                        poll_code=generate_poll_code(),
+                                        poll_secret=generate_poll_code(),
+                                        public_key=kpub.decode('utf-8'),
+                                        private_key=kpriv,
+                                       )
+            for choice_text in choices:
+                if choice_text.strip():
+                    Choice.objects.create(poll=poll, choice_text=choice_text.strip())
+                    Candidate.objects.create(name=choice_text.strip(), poll=poll)
+
+            if voter_ids_raw:
+                try:
+                    voter_id_list = [int(v.strip()) for v in voter_ids_raw.split(',') if v.strip()]
+                    print(voter_id_list)
+                    voter_hmac_list = [create_seeded_hash(str(v_id), poll.poll_secret) for v_id in voter_id_list]
+                    print(voter_hmac_list)
+
+                    voters = []
+                    for voter_id in voter_hmac_list:
+                        voter = Voter.objects.create(voter_code=voter_id) 
+                        voters.append(voter)
+
+                    print(voters)
+
+                    poll.voter_list.set(voters)
+                except ValueError:
+                    poll.delete()  
+                    return render(request, 'users/create_poll.html', {
+                        
+                    })
+            else:
+                # No voter IDs given -> allow all voters
+                all_voters = Voter.objects.all()
+                poll.voter_list.set(all_voters)
+
+            return redirect(reverse('vote:success', kwargs={'poll_code': poll.poll_code}))  # Just redirect or show success message
+
+    return render(request, 'users/create_poll.html', {
+
+    })
+
+@login_required(login_url='/login')
+def poll_success(request, poll_code):
+
+    poll = Poll.objects.get(poll_code=poll_code)
+
+    return render(request, 'users/success.html', {
+        'poll': poll
     })

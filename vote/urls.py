@@ -4,9 +4,6 @@ from . import views
 app_name = "vote"
 
 urlpatterns = [
-    path('create_poll/', views.create_poll, name='create_poll'),
-
-    path('success/<str:poll_code>/', views.poll_success, name='success'),
 
     path('vote/<str:poll_code>/', views.poll, name='vote_pass'),
 
