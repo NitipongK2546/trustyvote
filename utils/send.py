@@ -35,14 +35,8 @@ def send_vote(vote_data, voter_id, server_public_key_pem, poll_code):
     print("/n")
     print(packet)
 
-    print(current_poll.private_key)
-
     server_private_key = decrypt_private_key(current_poll.private_key)
     pem_data = f"""{server_private_key}"""
-
-    print()
-    print()
-    print(server_private_key)
 
     server_private_key = serialization.load_pem_private_key(
         pem_data.encode('utf-8'),
