@@ -10,6 +10,16 @@ from django.core.serializers import deserialize
 
 from dotenv import load_dotenv
 
+import logging
+import sys
+
+# Configure logging to stdout
+logging.basicConfig(
+    level=logging.INFO,
+    stream=sys.stdout,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
+
 load_dotenv()
 
 # Generate this key once and store it safely
@@ -154,7 +164,23 @@ def verify_and_decrypt_voting_packet(packet, server_private_key):
         print("")
         print("")
         print("")
-        print(decrypted_vote)
+
+        check = {
+            "enc_aes_key": base64.b64encode(enc_aes_key).decode(),
+            "voter_id": packet["voter_id"],
+            "voter_public_key": packet["voter_public_key"],
+            "signature": base64.b64encode(signature).decode(),
+            "decrypted_vote": decrypted_vote
+        }
+
+        # print(decrypted_vote)
+        logging.info(f"--------------------------------------------------------")
+
+        for key, val in check.items():
+            # print(f"{key}: {val}")
+            logging.info(f"{key}: {val}")
+            logging.info("")
+
 
         choice_json = json.loads(decrypted_vote['choice']) 
 

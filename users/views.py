@@ -137,14 +137,14 @@ def create_poll(request):
                 except ValueError:
                     poll.delete()  
                     return render(request, 'users/create_poll.html', {
-                        
+                        "Error": "Voter ID formatting is incorrect."
                     })
             else:
                 # No voter IDs given -> allow all voters
                 all_voters = Voter.objects.all()
                 poll.voter_list.set(all_voters)
 
-            return redirect(reverse('vote:success', kwargs={'poll_code': poll.poll_code}))  # Just redirect or show success message
+            return redirect(reverse('users:success', kwargs={'poll_code': poll.poll_code}))  # Just redirect or show success message
 
     return render(request, 'users/create_poll.html', {
 

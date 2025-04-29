@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Poll, Candidate
 
-from ..utils.code_gen import generate_poll_code, create_seeded_hash
+from utils.code_gen import generate_poll_code, create_seeded_hash
 
 from utils.send import send_vote
 

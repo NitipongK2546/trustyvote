@@ -59,13 +59,13 @@ def send_vote(vote_data, voter_id, server_public_key_pem, poll_code):
 
     verify_and_decrypt_voting_packet(packet, server_private_key)
 
-    fake_packet = packet.copy()
-    fake_packet["signature"] = "FQd2GoACyjKmii++6TQNe34k0xPQSk45RcftNAzMjfXdL4n6vzNWhCF" \
-    "BWXZ8n5+BZ7PRyqvAdu1ciyWMDL10rD+EvQyevPDbRpi/y/IZ5QTERe3aRsw6Vjo4cYjvO9FU/cC4rTgoreFw" \
-    "8EStQqv7d1v5hVDsHOTS1KBeLM2vmKbOoIPomCIYcAwMOIlH5h3WmpHfYU4himop43aAoOazncmjEpXBJYfDrBEa" \
-    "mH9j0PnMO1MaZUSQ9axwMCdq8VNIADFF3ayzc4v6PqdM266gVEkhe2+qsLqkjnCXbt4PkLRAMhmCCScJUc7RspopILa3m" \
-    "kVlsApEWKJSjYIibrd0uw=="  # Alter signature to simulate a fake one
+#     fake_packet = packet.copy()
+#     fake_packet["signature"] = "FQd2GoACyjKmii++6TQNe34k0xPQSk45RcftNAzMjfXdL4n6vzNWhCF" \
+#     "BWXZ8n5+BZ7PRyqvAdu1ciyWMDL10rD+EvQyevPDbRpi/y/IZ5QTERe3aRsw6Vjo4cYjvO9FU/cC4rTgoreFw" \
+#     "8EStQqv7d1v5hVDsHOTS1KBeLM2vmKbOoIPomCIYcAwMOIlH5h3WmpHfYU4himop43aAoOazncmjEpXBJYfDrBEa" \
+#     "mH9j0PnMO1MaZUSQ9axwMCdq8VNIADFF3ayzc4v6PqdM266gVEkhe2+qsLqkjnCXbt4PkLRAMhmCCScJUc7RspopILa3m" \
+#     "kVlsApEWKJSjYIibrd0uw=="  # Alter signature to simulate a fake one
 
-# # Step 2: Test with the fake signature (this should fail the verification).
-    verify_and_decrypt_voting_packet(fake_packet, server_private_key)
+# # # Step 2: Test with the fake signature (this should fail the verification).
+#     verify_and_decrypt_voting_packet(fake_packet, server_private_key)
 
