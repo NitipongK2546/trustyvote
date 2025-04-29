@@ -9,6 +9,7 @@ from vote.models import Poll, Candidate
 from django.contrib.auth.decorators import login_required
 from utils.code_gen import generate_poll_code, create_seeded_hash
 from utils.rsa import generate_rsa_keys
+from utils.count_vote import count_vote
 
 # Create your views here.
 
@@ -87,6 +88,8 @@ def profile_view(request):
 def poll_score(request, poll_code):
 
     poll = Poll.objects.get(poll_code=poll_code)
+
+    count_vote(poll_code)
 
     all_candidates = Candidate.objects.filter(poll=poll)
 

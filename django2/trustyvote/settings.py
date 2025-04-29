@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'vote',
     'utils',
     'users',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

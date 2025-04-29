@@ -7,6 +7,16 @@ from vote.models import VoteCard, Poll
 
 from utils.encrypt import create_voting_packet, verify_and_decrypt_voting_packet
 
+import logging
+import sys
+
+# Configure logging to stdout
+logging.basicConfig(
+    level=logging.INFO,
+    stream=sys.stdout,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
+
 
 def send_vote(vote_data, voter_id, server_public_key_pem, poll_code):
     # Generate RSA key pair for voter
@@ -29,29 +39,32 @@ def send_vote(vote_data, voter_id, server_public_key_pem, poll_code):
     #     encoding=serialization.Encoding.PEM,
     #     format=serialization.PublicFormat.SubjectPublicKeyInfo
     # )
+    print("PACKET IS NOT DONE")
     current_poll = Poll.objects.get(poll_code=poll_code)
     packet = create_voting_packet(vote_data, voter_id, voter_public_key_pem, voter_private_key, server_public_key_pem)
+    logging.info("PACKET IS DONE")
     VoteCard.objects.create(data=packet, poll=current_poll)
-    print("/n")
+    logging.info("VOTE CARD IS CREATED")
     print(packet)
 
-    server_private_key = decrypt_private_key(current_poll.private_key)
-    pem_data = f"""{server_private_key}"""
+    # current_poll = Poll.objects.get(poll_code=poll_code)
+    # server_private_key = decrypt_private_key(current_poll.private_key)
+    # pem_data = f"""{server_private_key}"""
 
-    server_private_key = serialization.load_pem_private_key(
-        pem_data.encode('utf-8'),
-        password=None,
-        backend=default_backend()
-    )
+    # server_private_key = serialization.load_pem_private_key(
+    #     pem_data.encode('utf-8'),
+    #     password=None,
+    #     backend=default_backend()
+    # )
 
-    # print(server_private_key)
+    # # print(server_private_key)
 
-    # server_public_key = server_public_key.public_bytes(
-    #             encoding=serialization.Encoding.PEM,
-    #             format=serialization.PublicFormat.SubjectPublicKeyInfo
-    #         )
+    # # server_public_key = server_public_key.public_bytes(
+    # #             encoding=serialization.Encoding.PEM,
+    # #             format=serialization.PublicFormat.SubjectPublicKeyInfo
+    # #         )
 
-    verify_and_decrypt_voting_packet(packet, server_private_key)
+    # verify_and_decrypt_voting_packet(packet, server_private_key)
 
 #     fake_packet = packet.copy()
 #     fake_packet["signature"] = "FQd2GoACyjKmii++6TQNe34k0xPQSk45RcftNAzMjfXdL4n6vzNWhCF" \
