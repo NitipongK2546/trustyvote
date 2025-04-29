@@ -9,5 +9,5 @@ urlpatterns = [
 
     path('vote/<str:poll_code>/authen', views.poll_authen, name='vote_authen'),
 
-    path('results/<str:poll_code>/', views.results, name='results'),
+    path('vote/results/<str:poll_code>/', views.results, name='results'),
 ]
