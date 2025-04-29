@@ -1,46 +1,66 @@
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Docker Compose reference guide at
-# https://docs.docker.com/go/compose-spec-reference/
-
-# Here the instructions define your application as a service called "server".
-# This service is built from the Dockerfile in the current directory.
-# You can add other services your application may depend on here, such as a
-# database or a cache. For examples, see the Awesome Compose repository:
-# https://github.com/docker/awesome-compose
 services:
+  # First Django app
   django1:
     build: .
     container_name: django_server_1
     ports:
-      - "9000:8000"
+      - "9000:8000"  # Expose Django1 on port 9000 on the host
     environment:
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=db
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASS}
     depends_on:
       - db
     command: ["/app/start.sh"]
+    volumes:
+      - static_volume:/app/staticfiles
     env_file:
       - .env
+    networks:
+      - app-network
 
-  django2:
-    build: .
-    container_name: django_server_2
+  # Second Django app
+  # django2:
+  #   build: .
+  #   container_name: django_server_2
+  #   ports:
+  #     - "9001:8000"  # Expose Django2 on port 9001 on the host
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_NAME=${DB_NAME}
+  #     - DB_USER=${DB_USER}
+  #     - DB_PASSWORD=${DB_PASS}
+  #   depends_on:
+  #     - db
+  #   command: ["/app/start.sh"]
+  #   volumes:
+  #     - static_volume:/app/staticfiles
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - app-network
+
+  #Nginx server to reverse proxy requests to the correct Django app
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: nginx
     ports:
-      - "9001:8000"
-    environment:
-      - DB_HOST=db
-      - 
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASS}
+      - "443:443"  # Expose HTTPS port for Nginx
+    volumes:
+      - static_volume:/app/staticfiles
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/server.crt:/etc/ssl/certs/server.crt
+      - ./docker/nginx/server.key:/etc/ssl/private/server.key
     depends_on:
-      - db
-    command: ["/app/start.sh"]
+      - django1
+    networks:
+      - app-network
     env_file:
       - .env
 
-
+  # MariaDB database service
   db:
     image: mariadb:10.11
     container_name: mariadb
@@ -56,6 +76,13 @@ services:
       - db_data:/var/lib/mysql
     env_file:
       - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   db_data:
+  static_volume:
