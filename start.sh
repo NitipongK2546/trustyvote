@@ -12,5 +12,7 @@ echo "MariaDB is up!"
 # Run migrations
 python manage.py migrate --noinput
 
+RUN python manage.py collectstatic --noinput
+
 # Start Django server
-python manage.py runserver 0.0.0.0:8000
+gunicorn trustyvote.wsgi:application --bind 0.0.0.0:8000
