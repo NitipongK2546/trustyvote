@@ -78,7 +78,7 @@ def poll(request, poll_code):
 
             return redirect('vote:results', poll_code=poll_code)
         else:
-            return redirect('users:main_page')
+            return redirect('/')
     
     print(poll.public_key)
     return render(request, 'vote/poll.html', {

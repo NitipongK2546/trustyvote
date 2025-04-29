@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #fff8e1; /* light yellow background */
+            background-image: url('images/solar_plant.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        main {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #d32f2f; /* red */
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ffd54f; /* light yellow border */
+        }
+
+        th {
+            background-color: #ffecb3;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #fffde7;
+        }
+
+        .details_button {
+            text-decoration: none;
+            background-color: #ff9d00;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .details_button:hover {
+            background-color: #9e6200;
+        }
+
+        a {
+            display: inline-block;
+            margin: 10px 10px 0 0;
+            text-decoration: none;
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #9a0007;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>DASHBOARD</h1>
+        <h2>Hello, {{member.member_fname}} {{member.member_lname}}</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Topic</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for poll in polls %}
+                    <tr>
+                        <td>{{ poll.poll_code }}</td>
+                        <td>{{ poll.question }}</td>
+                        <td>
+                            <a class="details_button" href="{% url 'users:poll_score' poll.poll_code %}">Count Votes</a>
+                        </td> 
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'users:create_poll' %}">Create Poll</a>
+        <a href="{% url 'users:logout' %}">Logout</a>
+    </main>
+</body>
+</html>

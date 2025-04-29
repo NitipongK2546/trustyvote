@@ -44,9 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'vote',
-    'users',
     'utils',
-
+    'users',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

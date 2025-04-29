@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #fff8e1; /* light yellow tone */
+            background-image: url('images/solar_plant.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.85); /* soft white overlay */
+            border-radius: 16px;
+            padding: 40px 50px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ffcc00; /* yellow border */
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #d32f2f; /* red tone */
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 20px;
+            color: #333;
+            background-color: #fff3e0; /* soft yellow */
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ffd54f;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile</h1>
+        <h2>Name: {{ member.member_fname }} {{ member.member_lname }}</h2>
+    </div>
+</body>
+</html>
