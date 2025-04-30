@@ -1,7 +1,9 @@
 services:
   # First Django app
   django1:
-    build: .
+    build:
+      context: ./django1
+      dockerfile: Dockerfile
     container_name: django_server_1
     ports:
       - "9000:8000"  # Expose Django1 on port 9000 on the host
@@ -20,26 +22,28 @@ services:
     networks:
       - app-network
 
-  # Second Django app
-  # django2:
-  #   build: .
-  #   container_name: django_server_2
-  #   ports:
-  #     - "9001:8000"  # Expose Django2 on port 9001 on the host
-  #   environment:
-  #     - DB_HOST=db
-  #     - DB_NAME=${DB_NAME}
-  #     - DB_USER=${DB_USER}
-  #     - DB_PASSWORD=${DB_PASS}
-  #   depends_on:
-  #     - db
-  #   command: ["/app/start.sh"]
-  #   volumes:
-  #     - static_volume:/app/staticfiles
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - app-network
+  #Second Django app
+  django2:
+    build:
+      context: ./django2
+      dockerfile: Dockerfile
+    container_name: django_server_2
+    ports:
+      - "9001:8000"  # Expose Django2 on port 9001 on the host
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASS}
+    depends_on:
+      - db
+    command: ["/app/start.sh"]
+    volumes:
+      - static_volume:/app/staticfiles
+    env_file:
+      - .env
+    networks:
+      - app-network
 
   #Nginx server to reverse proxy requests to the correct Django app
   nginx:

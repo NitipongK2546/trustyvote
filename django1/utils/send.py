@@ -35,23 +35,24 @@ def send_vote(vote_data, voter_id, server_public_key_pem, poll_code):
     print("/n")
     print(packet)
 
-    server_private_key = decrypt_private_key(current_poll.private_key)
-    pem_data = f"""{server_private_key}"""
+    # current_poll = Poll.objects.get(poll_code=poll_code)
+    # server_private_key = decrypt_private_key(current_poll.private_key)
+    # pem_data = f"""{server_private_key}"""
 
-    server_private_key = serialization.load_pem_private_key(
-        pem_data.encode('utf-8'),
-        password=None,
-        backend=default_backend()
-    )
+    # server_private_key = serialization.load_pem_private_key(
+    #     pem_data.encode('utf-8'),
+    #     password=None,
+    #     backend=default_backend()
+    # )
 
-    # print(server_private_key)
+    # # print(server_private_key)
 
-    # server_public_key = server_public_key.public_bytes(
-    #             encoding=serialization.Encoding.PEM,
-    #             format=serialization.PublicFormat.SubjectPublicKeyInfo
-    #         )
+    # # server_public_key = server_public_key.public_bytes(
+    # #             encoding=serialization.Encoding.PEM,
+    # #             format=serialization.PublicFormat.SubjectPublicKeyInfo
+    # #         )
 
-    verify_and_decrypt_voting_packet(packet, server_private_key)
+    # verify_and_decrypt_voting_packet(packet, server_private_key)
 
 #     fake_packet = packet.copy()
 #     fake_packet["signature"] = "FQd2GoACyjKmii++6TQNe34k0xPQSk45RcftNAzMjfXdL4n6vzNWhCF" \

@@ -9,8 +9,9 @@ done
 
 echo "MariaDB is up!"
 
-# Run migrations
-python manage.py migrate --noinput
+# python manage.py makemigrations --noinput
+# # Run migrations
+# python manage.py migrate --noinput
 
 python manage.py collectstatic --noinput
 
