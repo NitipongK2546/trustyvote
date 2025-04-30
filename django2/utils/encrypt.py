@@ -5,6 +5,7 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.fernet import Fernet
 from cryptography.exceptions import InvalidSignature
+from vote.models import Candidate
 
 from django.core.serializers import deserialize
 

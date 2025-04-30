@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Poll, Candidate
+from .models import Poll, Candidate, Choice
 
 from utils.code_gen import generate_poll_code, create_seeded_hash
 
@@ -55,7 +55,7 @@ def poll(request, poll_code):
 
             selected_choice = poll.choices.get(id=request.POST['choice'])
 
-            candidate = Candidate.objects.get(name=selected_choice, poll=poll)
+            candidate = Choice.objects.get(choice_text=selected_choice, poll=poll)
 
             candidate_data = serialize('json', [candidate])
 

@@ -7,6 +7,7 @@ from cryptography.fernet import Fernet
 from cryptography.exceptions import InvalidSignature
 
 from django.core.serializers import deserialize
+from vote.models import Candidate
 
 from dotenv import load_dotenv
 
@@ -186,10 +187,16 @@ def verify_and_decrypt_voting_packet(packet, server_private_key):
 
         choice_json_str = json.dumps(choice_json)
 
-        candidate = list(deserialize('json', choice_json_str))[0].object
+        choice_obj = list(deserialize('json', choice_json_str))[0].object
+
+        candidate = Candidate.objects.get(name=choice_obj.choice_text, poll=choice_obj.poll)
 
         candidate.votes += 1
         candidate.save()
+
+        print("")
+        print("")
+        print("")
 
     except InvalidSignature:
         print("❌ Invalid signature! Data may be tampered with.")

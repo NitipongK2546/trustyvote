@@ -106,8 +106,8 @@ def create_poll(request):
 
         kpriv, kpub = generate_rsa_keys()
 
-        print(kpub)
-        print(kpub.decode('utf-8'))
+        # print(kpub)
+        # print(kpub.decode('utf-8'))
 
         if question and choices:
             poll = Poll.objects.create(question=question, 
