@@ -46,3 +46,11 @@ Use the two_server branch.
 Docker should create MariaDB, Nginx, and 1-2 Django Containers.
 
 The server you will be using is on **localhost:9000**
+
+---
+
+IF START.SH IS MISSING FROM YOUR DOCKER CONTAINER, YOUR START.SH FILES IS PROBABLY ***CRLF***. (IT SHOULD BE ***LF***).
+
+You can change it in VS Code at the bottom right.
+
+Just in case you can't run it.
