@@ -36,6 +36,8 @@ Use the two_server branch.
 
 1. create .env file based on the .env.example files
 
+1. replace certificate and key in /docker/nginx/ with your own.
+
 1. run 
     ```
     docker compose up -d --build
