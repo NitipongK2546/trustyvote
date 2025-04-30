@@ -18,6 +18,7 @@ RUN pip install -r requirements.txt
 
 # Copy the project files into the container
 COPY . .
+COPY start.sh .
 
 # Make start.sh executable
 RUN chmod +x /app/start.sh
